@@ -9,7 +9,7 @@ This project provides a practical implementation of **Modern Portfolio Theory**,
 
 ## 📦 Project Structure
 
-The project currently includes three core classes:
+The project currently includes four core classes:
 
 ### 1. `MeanVarianceOpt`
 Performs **Mean-Variance Optimization** as defined in modern finance literature.  
@@ -23,6 +23,11 @@ It provides easy access to key financial ratios (Beta, Sharpe, Treynor) and gene
 An **abstract base class** designed to encapsulate shared attributes and methods.  
 This class is **not intended to be used directly**, but serves as the foundation for the two classes above.
 
+### 4. `FactorsModelOLS` 🆕
+A custom-built implementation of **Ordinary Least Squares (OLS)** regression, designed to support factor-based asset return modeling.  
+This class does not rely on external modeling libraries such as `sklearn` or `statsmodels`, and instead computes all regression outputs (coefficients, residuals, standard errors, t-statistics, p-values) from scratch.  
+Useful both as a learning tool and as a modular analytical component for multi-factor models or predictive pipelines.
+
 ---
 
 ## 🚀 Getting Started
@@ -30,7 +35,7 @@ This class is **not intended to be used directly**, but serves as the foundation
 
 | Purpose               | Libraries Needed                                                                 |
 |------------------------|----------------------------------------------------------------------------------|
-| Running the classes   | `pandas`, `numpy`, `cvxpy` *(for MeanVarianceOpt only)*                              |
+| Running the classes   | `pandas`, `numpy`, `cvxpy`, `scipy` *(for t-distribution in FactorsModelOLS)*     |
 | Running the notebooks | `pandas`, `numpy`, `matplotlib`, `seaborn`, `scipy`, `statsmodels`              |
 
 ---
@@ -40,9 +45,10 @@ This class is **not intended to be used directly**, but serves as the foundation
 - All inputs must be `pandas.Series` or `pandas.DataFrame` depending on the class:
   - `MeanVarianceOpt` expects a DataFrame of asset returns.
   - `CAPM` expects a DataFrame of assets and a separate Series for market returns.
+  - `FactorsModelOLS` expects a DataFrame (or array) of features and a 1D Series/array of target values.
 - The index must represent dates. If not explicitly a `DatetimeIndex`, the class will attempt to convert it using `pd.to_datetime()`.
-- Inputs must contain **daily log-returns**.
-- Outputs (e.g., Sharpe, Treynor, expected returns) are automatically converted into **relative returns**, unless stated otherwise.
+- Inputs must contain **daily log-returns**, or stationary features depending on the context.
+- Outputs (e.g., coefficients, statistical significance) are provided in clean tabular form.
 
 ---
 
